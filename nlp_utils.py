@@ -12,7 +12,7 @@ from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, CountVectorizer,
 from sklearn.preprocessing import StandardScaler
 
 
-def clean_text_data(df, var, stopwords=None):
+def clean_text_data(df, var, stopwords_list=None):
     """
     Function to clean a text column in a Pandas DataFrame
     - converts string to lowercase
@@ -20,12 +20,12 @@ def clean_text_data(df, var, stopwords=None):
     - removes numbers and special characters
     - removes multiple spaces
     """
-    if stopwords is None:
-        stopwords = set(stopwords.words('english')).union(set(ENGLISH_STOP_WORDS))
+    if stopwords_list is None:
+        stopwords_list = set(stopwords.words('english')).union(set(ENGLISH_STOP_WORDS))
 
     df_copy = df.copy()
     df_copy[var] = df_copy[var].apply(lambda x: x.lower())
-    df_copy[var] = df_copy[var].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords)]))
+    df_copy[var] = df_copy[var].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords_list)]))
     df_copy[var] = df_copy[var].apply(lambda x: re.sub('[^a-z ]', "", x))
     df_copy[var] = df_copy[var].apply(lambda x: ' '.join(x.split()))
 

@@ -5,14 +5,14 @@ import pandas as pd
 from gensim.models import Doc2Vec
 from gensim.models.doc2vec import TaggedDocument
 from nltk import word_tokenize, pos_tag
-from nltk.corpus import wordnet
+from nltk.corpus import stopwords, wordnet
 from nltk.stem import WordNetLemmatizer
 from nltk.stem.snowball import EnglishStemmer
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, CountVectorizer, TfidfVectorizer
 from sklearn.preprocessing import StandardScaler
 
 
-def clean_text_data(df, var, stopwords):
+def clean_text_data(df, var, stopwords=None):
     """
     Function to clean a text column in a Pandas DataFrame
     - converts string to lowercase
@@ -20,6 +20,9 @@ def clean_text_data(df, var, stopwords):
     - removes numbers and special characters
     - removes multiple spaces
     """
+    if stopwords is None:
+        stopwords = set(stopwords.words('english')).union(set(ENGLISH_STOP_WORDS))
+
     df_copy = df.copy()
     df_copy[var] = df_copy[var].apply(lambda x: x.lower())
     df_copy[var] = df_copy[var].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords)]))

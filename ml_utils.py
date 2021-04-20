@@ -2,6 +2,14 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix, f1_score, precision_score, recall_score, accuracy_score, roc_auc_score
 
 
+def adjusted_classes(y_scores, t):
+    """
+    This function adjusts class predictions based on the prediction threshold (t).
+    """
+
+    return [1 if y >= t else 0 for y in y_scores]
+
+
 def print_accuracy(y_train, y_train_pred, y_test, y_test_pred):
     """Prints the training and test set accuracy of the classifier"""
     print(f'training set accuracy {round(accuracy_score(y_train, y_train_pred), 4)}')
